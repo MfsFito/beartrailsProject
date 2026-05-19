@@ -33,4 +33,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Relasi
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    public function tourguideProfile()
+    {
+        return $this->hasOne(TourguideProfile::class);
+    }
 }
