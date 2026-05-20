@@ -46,6 +46,15 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->role === 'tourguide') {
+            return redirect()->route('tourguide.dashboard');
+        } else {
+            return redirect()->route('dashboard');   // User biasa
+        }
         return redirect(route('dashboard', absolute: false));
     }
 }
