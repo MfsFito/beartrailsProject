@@ -1,46 +1,82 @@
 # BearTrails
 
-Platform wisata interaktif berbasis web untuk menemukan destinasi wisata di Indonesia, melihat cuaca real-time, menjelajahi peta, serta terhubung dengan Tour Guide terverifikasi.
+**Platform Wisata Interaktif Lombok**  
+*Follow the Trail, Discover the World*
 
-*"Follow the Trail, Discover the World"*
+## 📋 Deskripsi Project
 
-## Sitemap
+BearTrails adalah website yang membantu wisatawan menemukan destinasi wisata di Lombok, melihat informasi cuaca real-time, peta interaktif, serta terhubung langsung dengan Tour Guide lokal terverifikasi.
 
-Sitemap BearTrails ada di (sitemap_beartrails.jpg)
+Project ini dibangun menggunakan **Laravel 12** dengan pendekatan tim selama 6 hari untuk mensimulasikan proses pengembangan software secara kolaboratif.
+
+---
+
+## ✨ Fitur Utama
+
+### Untuk Pengguna
+- Jelajah destinasi dengan filter dan pencarian
+- Detail destinasi lengkap (peta, cuaca real-time, forecast 7 hari, galeri foto, review)
+- Fitur rute menuju destinasi
+- Simpan destinasi favorit
+- Daftar & detail Tour Guide + jadwal ketersediaan
+- Profil pengguna + riwayat review
+
+### Untuk Tour Guide
+- Dashboard khusus Tour Guide
+- Kelola profil, jadwal ketersediaan, dan portofolio
+- Verifikasi akun oleh Admin
+
+### Untuk Admin
+- Kelola destinasi, user, dan Tour Guide
+- Toggle status Tour Guide
+- Monitoring review dan data platform
+
+---
+
+## 👥 Tim Pengembang
+
+| Nama       | Role              | Tanggung Jawab Utama                          |
+|------------|-------------------|-----------------------------------------------|
+| **FATIO**  | Fullstack         | Database, Migration, Model, Integrasi API, Seeder, Deployment |
+| **ALIF**   | Backend           | Controller, Middleware, Logic, Authentication, Authorization |
+| **RIVAL**  | Frontend          | UI/UX, Blade Template, Responsive Design, Styling |
+
+## 🛠 Tech Stack
+
+| Kategori       | Teknologi                          |
+|----------------|------------------------------------|
+| Backend        | Laravel 12                         |
+| Frontend       | Blade Template + Alpine.js         |
+| Styling        | Tailwind CSS v4                    |
+| Database       | MySQL                              |
+| Mapping        | Leaflet.js + OpenStreetMap         |
+| Weather        | Open-Meteo API                     |
+| Authentication | Laravel Breeze                     |
+| Lainnya        | Git, Composer, npm, Vite           |
+
+
+## 📁 Struktur Folder Utama
+
+```
+BearTrails/
+├── app/Models/                 # Semua Eloquent Models
+├── app/Http/Controllers/       # Controller
+├── database/migrations/        # Migration files
+├── database/seeders/           # Seeder & Factory
+├── resources/views/            # Blade Templates
+│   ├── layouts/
+│   ├── destinations/
+│   ├── tourguides/
+│   └── admin/
+├── routes/web.php
+├── public/assets/
+└── README.md
+```
+
+## 🎯 Sitemap
+
 ![Sitemap BearTrails](sitemap_beartrails.jpg)
 
 ---
 
-## Fitur Utama
-
-### Aktor Sistem
-- Publik / Tamu
-- User (Wisatawan)
-- Tour Guide
-- Administrator
-
-### Halaman Utama
-- `/` — Beranda
-- `/destinations` — Daftar Destinasi + Filter & Search
-- `/destinations/{id}` — Detail Destinasi (Peta, Cuaca, Review, Favorit, Rute)
-- `/explore` — Peta Bebas + Cuaca di Titik Mana Saja
-- `/tourguides` — Daftar Tour Guide
-- `/tourguides/{id}` — Detail Tour Guide + Availability + Portofolio
-- `/login` — Login Terpusat (semua role)
-- `/register` — Registrasi User
-- `/profile` — Profil User + Favorit + Riwayat Review
-- `/tourguide/dashboard` — Dashboard Tour Guide
-- `/admin/dashboard` — Admin Panel
-
-
-## Tech Stack
-
-- **Backend**     : Laravel 11 (PHP)
-- **Frontend**    : Blade Template, HTML5, CSS, JavaScript
-- **Styling**     : Tailwind CSS
-- **Database**    : MySQL
-- **Maps**        : Leaflet.js + OpenStreetMap
-- **Weather**     : Open-Meteo API
-- **Lainnya**     : Git, XAMPP
-
----
+## 👏 Terima Kasih
