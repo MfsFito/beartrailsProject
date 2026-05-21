@@ -7,8 +7,6 @@
 
 BearTrails adalah website yang membantu wisatawan menemukan destinasi wisata di Lombok, melihat informasi cuaca real-time, peta interaktif, serta terhubung langsung dengan Tour Guide lokal terverifikasi.
 
-Project ini dibangun menggunakan **Laravel 12** dengan pendekatan tim selama 6 hari untuk mensimulasikan proses pengembangan software secara kolaboratif.
-
 ---
 
 ## ✨ Fitur Utama
