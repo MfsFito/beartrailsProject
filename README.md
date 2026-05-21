@@ -7,6 +7,7 @@ Platform wisata interaktif berbasis web untuk menemukan destinasi wisata di Indo
 ## Sitemap
 
 Sitemap BearTrails ada di (sitemap_beartrails.jpg)
+![Sitemap BearTrails](sitemap_beartrails.jpg)
 
 ---
 
@@ -43,29 +44,3 @@ Sitemap BearTrails ada di (sitemap_beartrails.jpg)
 - **Lainnya**     : Git, XAMPP
 
 ---
-
-## Database
-
-**Nama Database**: `beartrails`
-
-**Tabel Utama**:
-- `users`
-- `destinations`
-- `reviews`
-- `favorites`
-- `tourguide_profiles`
-- `tourguide_availabilities`
-- `tourguide_portfolios`
-
-Detail skema tabel lengkap terdapat di folder `database/migrations/`.
-
-## Cara Menjalankan Project
-
-1. `git clone <repository-url>`
-2. `cd beartrails`
-3. `composer install`
-4. `npm install && npm run dev`
-5. `cp .env.example .env`
-6. `php artisan key:generate`
-7. `php artisan migrate --seed`
-8. `php artisan serve`
