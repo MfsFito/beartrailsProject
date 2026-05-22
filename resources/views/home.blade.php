@@ -44,7 +44,7 @@
                 Cuaca Hari Ini
             </h2>
             <div class="grid grid-cols-2 md:grid-cols-5 gap-lg" id="weather-grid">
-                @foreach([
+                @foreach([ 
                     ['nama' => 'Mataram', 'lat' => -8.5833, 'lon' => 116.1167],
                     ['nama' => 'Lombok Barat', 'lat' => -8.6500, 'lon' => 116.0833],
                     ['nama' => 'Lombok Tengah', 'lat' => -8.7442, 'lon' => 116.2833],
