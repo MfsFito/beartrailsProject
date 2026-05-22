@@ -55,6 +55,22 @@
                 </p>
             </div>
 
+            {{-- Peta --}}
+            @if($destination->latitude && $destination->longitude)
+            <div class="mb-8">
+                <h2 class="font-display text-2xl font-semibold text-primary mb-4">Lokasi Destinasi</h2>
+                <div id="map" class="w-full h-[350px] rounded-xl overflow-hidden border border-tertiary-fixed-dim shadow-sm"></div>
+                <div class="mt-3">
+                    <a href="https://www.openstreetmap.org/?mlat={{ $destination->latitude }}&mlon={{ $destination->longitude }}"
+                       target="_blank"
+                       class="inline-flex items-center text-tertiary font-bold hover:underline text-sm">
+                        Buka di OpenStreetMap
+                        <span class="material-symbols-outlined text-sm ml-1">north_east</span>
+                    </a>
+                </div>
+            </div>
+            @endif
+
             {{-- Reviews --}}
             <div class="mb-8">
                 <h2 class="font-display text-2xl font-semibold text-primary mb-6">Ulasan Pengunjung</h2>
@@ -165,8 +181,87 @@
                 </div>
                 @endauth
 
+                {{-- Cuaca --}}
+                @if($destination->latitude && $destination->longitude)
+                <div class="bg-[#90E0EF] p-6 rounded-xl text-primary shadow-sm border border-sky-300">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-bold uppercase tracking-widest text-xs opacity-70">Cuaca Saat Ini</h4>
+                        <span class="material-symbols-outlined text-3xl" id="weather-icon-sidebar">wb_sunny</span>
+                    </div>
+                    <div class="text-4xl font-bold mb-2" id="weather-temp-sidebar">--°C</div>
+                    <div class="flex justify-between text-sm font-medium">
+                        <div class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">humidity_mid</span>
+                            <span id="weather-humidity-sidebar">--%</span>
+                        </div>
+                        <div id="weather-condition-sidebar">Memuat...</div>
+                    </div>
+                </div>
+                @endif
+
             </div>
         </aside>
     </main>
+
+    @if($destination->latitude && $destination->longitude)
+    @push('scripts')
+    <script>
+    window.addEventListener('load', function() {
+
+        // Peta
+        var map = L.map('map').setView([{{ $destination->latitude }}, {{ $destination->longitude }}], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        L.marker([{{ $destination->latitude }}, {{ $destination->longitude }}])
+            .addTo(map)
+            .bindPopup('<b>{{ $destination->name }}</b><br>{{ $destination->location }}')
+            .openPopup();
+
+        // Data cuaca
+        const weatherCodes = {
+            0: ['wb_sunny', 'Cerah'],
+            1: ['partly_cloudy_day', 'Sebagian Cerah'],
+            2: ['partly_cloudy_day', 'Berawan'],
+            3: ['cloud', 'Mendung'],
+            45: ['foggy', 'Berkabut'],
+            51: ['grain', 'Gerimis'],
+            61: ['rainy', 'Hujan Ringan'],
+            63: ['rainy', 'Hujan Sedang'],
+            80: ['rainy', 'Hujan Lokal'],
+            95: ['thunderstorm', 'Badai']
+        };
+
+        // Fetch cuaca current saja
+        fetch('https://api.open-meteo.com/v1/forecast?latitude={{ $destination->latitude }}&longitude={{ $destination->longitude }}&current=temperature_2m,weathercode,relative_humidity_2m&timezone=Asia%2FMakassar')
+            .then(r => r.json())
+            .then(data => {
+                const c = data.current;
+                const [icon, condition] = weatherCodes[c.weathercode] || ['wb_sunny', 'Cerah'];
+                document.getElementById('weather-temp-sidebar').textContent = c.temperature_2m + '°C';
+                document.getElementById('weather-humidity-sidebar').textContent = c.relative_humidity_2m + '%';
+                document.getElementById('weather-condition-sidebar').textContent = condition;
+                document.getElementById('weather-icon-sidebar').textContent = icon;
+            })
+            .catch(() => {
+                document.getElementById('weather-condition-sidebar').textContent = 'Data tidak tersedia';
+            });
+
+        // Star Rating
+        const stars = document.querySelectorAll('.star-btn');
+        stars.forEach((star, index) => {
+            star.addEventListener('click', function() {
+                stars.forEach((s, i) => {
+                    s.style.fontVariationSettings = i <= index ? "'FILL' 1" : "'FILL' 0";
+                    s.style.color = i <= index ? '#8e4e14' : '';
+                });
+                document.querySelector(`input[value="${index + 1}"]`).checked = true;
+            });
+        });
+
+    });
+    </script>
+    @endpush
+    @endif
 
 </x-app-layout>
