@@ -172,4 +172,45 @@
         </div>
     </section>
 
+    @push('scripts')
+    <script>
+    // Peta Homepage
+    var mapHome = L.map('map-home').setView([-2.5, 118.0], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(mapHome);
+
+    // Marker semua destinasi
+    var destinations = @json($destinations);
+    destinations.forEach(function(d) {
+        if (d.latitude && d.longitude) {
+            L.marker([d.latitude, d.longitude])
+                .addTo(mapHome)
+                .bindPopup('<b>' + d.name + '</b><br>' + d.location);
+        }
+    });
+
+    // Cuaca 5 Kota
+    const weatherIcons = {
+        0: 'sunny', 1: 'partly_cloudy_day', 2: 'partly_cloudy_day',
+        3: 'cloud', 45: 'foggy', 48: 'foggy',
+        51: 'grain', 61: 'rainy', 63: 'rainy',
+        65: 'rainy', 80: 'rainy', 95: 'thunderstorm'
+    };
+
+    document.querySelectorAll('#weather-grid > div').forEach(function(card) {
+        const lat = card.dataset.lat;
+        const lon = card.dataset.lon;
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode,relative_humidity_2m`)
+            .then(r => r.json())
+            .then(data => {
+                const c = data.current;
+                card.querySelector('.weather-temp').textContent = c.temperature_2m + '°C';
+                card.querySelector('.weather-humidity').textContent = c.relative_humidity_2m + '% Humidity';
+                card.querySelector('.weather-icon').textContent = weatherIcons[c.weathercode] || 'sunny';
+            })
+            .catch(() => {});
+    });
+    </script>
+    @endpush
 </x-app-layout>
