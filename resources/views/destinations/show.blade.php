@@ -19,6 +19,88 @@
         </div>
     </section>
 
+    {{-- Galeri Foto --}}
+    @if($destination->images->count() > 0)
+    @php
+        $allImages = $destination->images;
+        $showImages = $allImages->take(4);
+        $remaining = $allImages->count() - 4;
+    @endphp
+    <div class="max-w-[1200px] mx-auto px-6 pt-6">
+        <div class="grid grid-cols-4 gap-3 h-[320px]">
+
+            {{-- Kolom Kiri: 3 foto kecil --}}
+            <div class="col-span-1 flex flex-col gap-3">
+                @foreach($showImages->take(3) as $index => $img)
+                <div class="relative flex-1 rounded-xl overflow-hidden group cursor-pointer"
+                    onclick="openLightbox('{{ asset('storage/'.$img->image) }}', {{ $index }})">
+                    <img src="{{ asset('storage/'.$img->image) }}"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        alt="Foto {{ $destination->name }}">
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+                </div>
+                @endforeach
+            </div>
+
+            {{-- Kolom Kanan: 1 foto besar --}}
+            <div class="col-span-3 relative rounded-xl overflow-hidden group cursor-pointer"
+                onclick="openLightbox('{{ asset('storage/'.($showImages->get(3) ?? $showImages->first())->image) }}', 3)">
+                <img src="{{ asset('storage/'.($showImages->get(3) ?? $showImages->first())->image) }}"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    alt="Foto {{ $destination->name }}">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+
+                {{-- Tombol Lihat Semua --}}
+                @if($remaining > 0)
+                <button onclick="event.stopPropagation(); openGallery()"
+                        class="absolute bottom-4 right-4 bg-black/60 hover:bg-black/80 text-white px-4 py-2 rounded-lg text-sm font-semibold backdrop-blur-sm transition-all flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">photo_library</span>
+                    +{{ $remaining }} foto lagi
+                </button>
+                @endif
+            </div>
+
+        </div>
+    </div>
+
+    {{-- Lightbox --}}
+    <div id="lightbox" class="hidden fixed inset-0 bg-black/95 z-[200] flex flex-col items-center justify-center p-4">
+
+        {{-- Tombol Tutup --}}
+        <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white hover:text-gray-300 z-10">
+            <span class="material-symbols-outlined text-4xl">close</span>
+        </button>
+
+        {{-- Counter --}}
+        <div class="absolute top-4 left-1/2 -translate-x-1/2 text-white text-sm font-semibold bg-black/40 px-4 py-1 rounded-full" id="lightbox-counter"></div>
+
+        {{-- Foto Utama --}}
+        <div class="relative flex items-center justify-center w-full max-h-[80vh]">
+            <button onclick="prevPhoto()" class="absolute left-4 text-white hover:text-gray-300 bg-black/40 rounded-full p-2 transition-all hover:bg-black/60">
+                <span class="material-symbols-outlined text-3xl">chevron_left</span>
+            </button>
+            <img id="lightbox-img" src="" class="max-w-full max-h-[75vh] rounded-xl shadow-2xl object-contain">
+            <button onclick="nextPhoto()" class="absolute right-4 text-white hover:text-gray-300 bg-black/40 rounded-full p-2 transition-all hover:bg-black/60">
+                <span class="material-symbols-outlined text-3xl">chevron_right</span>
+            </button>
+        </div>
+
+        {{-- Thumbnail Strip --}}
+        <div class="flex gap-2 mt-4 overflow-x-auto max-w-full px-4" id="lightbox-thumbs"></div>
+
+    </div>
+
+    {{-- Data semua foto untuk JS --}}
+    <script>
+        var allPhotos = [
+            @foreach($allImages as $img)
+            '{{ asset('storage/'.$img->image) }}',
+            @endforeach
+        ];
+    </script>
+
+    @endif
+    
     {{-- Main Content --}}
     <main class="max-w-[1200px] mx-auto py-12 px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
 
@@ -437,6 +519,72 @@
                 document.querySelector(`input[value="${index + 1}"]`).checked = true;
             });
         });
+
+        // ── Lightbox dengan navigasi ──
+        var currentPhotoIndex = 0;
+
+        window.openLightbox = function(src, index) {
+            currentPhotoIndex = index || 0;
+            showPhoto(currentPhotoIndex);
+            document.getElementById('lightbox').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            buildThumbs();
+        };
+
+        window.openGallery = function() {
+            openLightbox(allPhotos[0], 0);
+        };
+
+        window.closeLightbox = function() {
+            document.getElementById('lightbox').classList.add('hidden');
+            document.body.style.overflow = '';
+        };
+
+        window.prevPhoto = function() {
+            currentPhotoIndex = (currentPhotoIndex - 1 + allPhotos.length) % allPhotos.length;
+            showPhoto(currentPhotoIndex);
+        };
+
+        window.nextPhoto = function() {
+            currentPhotoIndex = (currentPhotoIndex + 1) % allPhotos.length;
+            showPhoto(currentPhotoIndex);
+        };
+
+        function showPhoto(index) {
+            document.getElementById('lightbox-img').src = allPhotos[index];
+            document.getElementById('lightbox-counter').textContent = (index + 1) + ' / ' + allPhotos.length;
+            // Update thumbnail aktif
+            document.querySelectorAll('.thumb-item').forEach((t, i) => {
+                t.classList.toggle('ring-2', i === index);
+                t.classList.toggle('ring-white', i === index);
+                t.classList.toggle('opacity-100', i === index);
+                t.classList.toggle('opacity-50', i !== index);
+            });
+        }
+
+        function buildThumbs() {
+            const container = document.getElementById('lightbox-thumbs');
+            container.innerHTML = '';
+            allPhotos.forEach((src, i) => {
+                const thumb = document.createElement('img');
+                thumb.src = src;
+                thumb.className = 'thumb-item w-16 h-16 object-cover rounded-lg cursor-pointer transition-all ' + (i === currentPhotoIndex ? 'ring-2 ring-white opacity-100' : 'opacity-50 hover:opacity-80');
+                thumb.onclick = function() {
+                    currentPhotoIndex = i;
+                    showPhoto(i);
+                };
+                container.appendChild(thumb);
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('lightbox').classList.contains('hidden')) return;
+            if (e.key === 'ArrowLeft') prevPhoto();
+            if (e.key === 'ArrowRight') nextPhoto();
+            if (e.key === 'Escape') closeLightbox();
+        });
+
 
     });
     </script>
