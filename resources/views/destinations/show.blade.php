@@ -215,6 +215,23 @@
                         <p class="text-gray-400 text-xs text-center">Memuat prakiraan...</p>
                     </div>
                 </div>
+
+                {{-- Tombol Rute --}}
+                <div class="bg-surface-container-highest p-5 rounded-xl shadow-sm border border-outline-variant">
+                    <h4 class="font-bold uppercase tracking-widest text-xs text-on-surface-variant mb-3">🧭 Navigasi</h4>
+                    <button onclick="showRoute()" id="btn-route"
+                            class="w-full py-3 bg-primary text-white font-semibold rounded-lg flex justify-center items-center gap-2 hover:opacity-90 transition-all active:scale-95 text-sm">
+                        <span class="material-symbols-outlined text-[18px]">directions</span>
+                        Rute ke Sini
+                    </button>
+                    <button onclick="cancelRoute()" id="btn-cancel-route"
+                            class="hidden w-full py-3 bg-error text-white font-semibold rounded-lg flex justify-center items-center gap-2 hover:opacity-90 transition-all active:scale-95 text-sm mt-2">
+                        <span class="material-symbols-outlined text-[18px]">close</span>
+                        Batalkan Rute
+                    </button>
+                    <p class="text-xs text-on-surface-variant mt-2 text-center">Membutuhkan izin lokasi GPS</p>
+                    <div id="route-info" class="hidden mt-3 p-3 bg-surface-container rounded-lg text-xs text-on-surface-variant"></div>
+                </div>
                 @endif
 
             </div>
@@ -258,7 +275,7 @@
 
         const hari = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
 
-        // Fetch cuaca + hourly + forecast sekaligus
+        // Fetch cuaca + hourly + forecast
         fetch('https://api.open-meteo.com/v1/forecast?latitude={{ $destination->latitude }}&longitude={{ $destination->longitude }}&current=temperature_2m,weathercode,relative_humidity_2m&hourly=temperature_2m,weathercode,precipitation_probability&daily=temperature_2m_max,temperature_2m_min,weathercode,precipitation_sum&timezone=Asia%2FMakassar&forecast_days=7')
             .then(r => r.json())
             .then(data => {
@@ -271,7 +288,7 @@
                 document.getElementById('weather-condition-sidebar').textContent = condition;
                 document.getElementById('weather-icon-sidebar').textContent = icon;
 
-                // Cuaca Per Waktu (Pagi/Siang/Sore/Malam)
+                // Cuaca Per Waktu
                 const jamTarget = [6, 12, 18, 21];
                 const labelWaktu = ['🌅 Pagi', '☀️ Siang', '🌤️ Sore', '🌙 Malam'];
                 const jamLabel = ['06.00', '12.00', '18.00', '21.00'];
@@ -328,6 +345,86 @@
                 document.getElementById('forecast-container').innerHTML = '<p class="text-gray-400 text-xs text-center">Data tidak tersedia</p>';
                 document.getElementById('hourly-container').innerHTML = '<p class="text-gray-400 text-xs text-center col-span-4">Data tidak tersedia</p>';
             });
+
+        // Fungsi Rute
+        var routingControl = null;
+
+        window.showRoute = function() {
+            if (!navigator.geolocation) {
+                alert('Browser kamu tidak mendukung GPS.');
+                return;
+            }
+
+            const btn = document.getElementById('btn-route');
+            btn.innerHTML = '⏳ Mencari lokasi...';
+            btn.disabled = true;
+
+            navigator.geolocation.getCurrentPosition(
+                function(pos) {
+                    const userLat = pos.coords.latitude;
+                    const userLon = pos.coords.longitude;
+
+                    if (routingControl) {
+                        map.removeControl(routingControl);
+                    }
+
+                    routingControl = L.Routing.control({
+                        waypoints: [
+                            L.latLng(userLat, userLon),
+                            L.latLng({{ $destination->latitude }}, {{ $destination->longitude }})
+                        ],
+                        routeWhileDragging: false,
+                        showAlternatives: false,
+                        lineOptions: {
+                            styles: [{ color: '#012d1d', weight: 5 }]
+                        },
+                        createMarker: function(i, waypoint) {
+                            const icon = i === 0 ? '📍' : '🏁';
+                            return L.marker(waypoint.latLng, {
+                                icon: L.divIcon({
+                                    html: `<div style="font-size:24px">${icon}</div>`,
+                                    iconSize: [30, 30],
+                                    className: ''
+                                })
+                            });
+                        }
+                    }).addTo(map);
+
+                    routingControl.on('routesfound', function(e) {
+                        const route = e.routes[0];
+                        const jarak = (route.summary.totalDistance / 1000).toFixed(1);
+                        const waktu = Math.round(route.summary.totalTime / 60);
+                        document.getElementById('route-info').classList.remove('hidden');
+                        document.getElementById('route-info').innerHTML = `
+                            📏 Jarak: <strong>${jarak} km</strong><br>
+                            ⏱️ Estimasi: <strong>${waktu} menit</strong>
+                        `;
+                    });
+
+                    document.getElementById('map').scrollIntoView({ behavior: 'smooth' });
+                    btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">directions</span> Ubah Rute';
+                    btn.disabled = false;
+                    document.getElementById('btn-cancel-route').classList.remove('hidden');
+                },
+                function() {
+                    alert('Gagal mendapatkan lokasi. Pastikan GPS aktif dan izin lokasi diberikan.');
+                    btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">directions</span> Rute ke Sini';
+                    btn.disabled = false;
+                }
+            );
+        };
+
+        // Batalkan Rute
+        window.cancelRoute = function() {
+            if (routingControl) {
+                map.removeControl(routingControl);
+                routingControl = null;
+            }
+            document.getElementById('route-info').classList.add('hidden');
+            document.getElementById('btn-cancel-route').classList.add('hidden');
+            document.getElementById('btn-route').innerHTML = '<span class="material-symbols-outlined text-[18px]">directions</span> Rute ke Sini';
+            document.getElementById('btn-route').disabled = false;
+        };
 
         // Star Rating
         const stars = document.querySelectorAll('.star-btn');
