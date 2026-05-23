@@ -77,7 +77,6 @@
 
                 @if($reviews->count() > 0)
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                    {{-- Rating Summary --}}
                     <div class="bg-surface-container p-8 rounded-2xl flex flex-col items-center justify-center text-center">
                         <div class="text-6xl font-bold text-primary leading-none mb-2">
                             {{ number_format($destination->averageRating() ?? 0, 1) }}
@@ -89,8 +88,6 @@
                         </div>
                         <p class="text-on-surface-variant text-sm">{{ $reviews->count() }} ulasan</p>
                     </div>
-
-                    {{-- Review Cards --}}
                     <div class="md:col-span-2 space-y-4">
                         @foreach($reviews->take(2) as $review)
                         <div class="p-6 bg-surface-container-low rounded-xl border border-outline-variant">
@@ -124,7 +121,6 @@
                 </div>
                 @endif
 
-                {{-- Form Review --}}
                 @auth
                 <div class="bg-surface-container-highest p-8 rounded-2xl border border-outline-variant">
                     <h3 class="font-bold text-lg text-primary mb-6">Bagikan Pengalamanmu</h3>
@@ -181,7 +177,7 @@
                 </div>
                 @endauth
 
-                {{-- Cuaca --}}
+                {{-- Cuaca Saat Ini --}}
                 @if($destination->latitude && $destination->longitude)
                 <div class="bg-[#90E0EF] p-6 rounded-xl text-primary shadow-sm border border-sky-300">
                     <div class="flex justify-between items-start mb-4">
@@ -195,6 +191,28 @@
                             <span id="weather-humidity-sidebar">--%</span>
                         </div>
                         <div id="weather-condition-sidebar">Memuat...</div>
+                    </div>
+                </div>
+
+                {{-- Cuaca Per Waktu --}}
+                <div class="bg-gray-100 p-5 rounded-xl shadow-sm border border-gray-200">
+                    <h4 class="font-bold uppercase tracking-widest text-xs text-gray-500 mb-4">🕐 Hari Ini</h4>
+                    <div id="hourly-container" class="grid grid-cols-4 gap-2">
+                        @foreach(['Pagi', 'Siang', 'Sore', 'Malam'] as $waktu)
+                        <div class="text-center">
+                            <p class="text-xs text-gray-400">{{ $waktu }}</p>
+                            <p class="text-lg my-1">--</p>
+                            <p class="text-xs font-bold text-gray-600">--°</p>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Forecast 7 Hari --}}
+                <div class="bg-gray-100 p-5 rounded-xl shadow-sm border border-gray-200">
+                    <h4 class="font-bold uppercase tracking-widest text-xs text-gray-500 mb-4">📅 7 Hari ke Depan</h4>
+                    <div id="forecast-container" class="space-y-2">
+                        <p class="text-gray-400 text-xs text-center">Memuat prakiraan...</p>
                     </div>
                 </div>
                 @endif
@@ -232,19 +250,83 @@
             95: ['thunderstorm', 'Badai']
         };
 
-        // Fetch cuaca current saja
-        fetch('https://api.open-meteo.com/v1/forecast?latitude={{ $destination->latitude }}&longitude={{ $destination->longitude }}&current=temperature_2m,weathercode,relative_humidity_2m&timezone=Asia%2FMakassar')
+        const weatherEmoji = {
+            0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
+            45: '🌫️', 51: '🌦️', 61: '🌧️', 63: '🌧️',
+            80: '🌦️', 95: '⛈️'
+        };
+
+        const hari = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+
+        // Fetch cuaca + hourly + forecast sekaligus
+        fetch('https://api.open-meteo.com/v1/forecast?latitude={{ $destination->latitude }}&longitude={{ $destination->longitude }}&current=temperature_2m,weathercode,relative_humidity_2m&hourly=temperature_2m,weathercode,precipitation_probability&daily=temperature_2m_max,temperature_2m_min,weathercode,precipitation_sum&timezone=Asia%2FMakassar&forecast_days=7')
             .then(r => r.json())
             .then(data => {
+
+                // Cuaca Saat Ini
                 const c = data.current;
                 const [icon, condition] = weatherCodes[c.weathercode] || ['wb_sunny', 'Cerah'];
                 document.getElementById('weather-temp-sidebar').textContent = c.temperature_2m + '°C';
                 document.getElementById('weather-humidity-sidebar').textContent = c.relative_humidity_2m + '%';
                 document.getElementById('weather-condition-sidebar').textContent = condition;
                 document.getElementById('weather-icon-sidebar').textContent = icon;
+
+                // Cuaca Per Waktu (Pagi/Siang/Sore/Malam)
+                const jamTarget = [6, 12, 18, 21];
+                const labelWaktu = ['🌅 Pagi', '☀️ Siang', '🌤️ Sore', '🌙 Malam'];
+                const jamLabel = ['06.00', '12.00', '18.00', '21.00'];
+
+                let hourlyHTML = '';
+                jamTarget.forEach((jam, idx) => {
+                    const jamIndex = data.hourly.time.findIndex(t => t.includes(`T${String(jam).padStart(2,'0')}:00`));
+                    const suhu = jamIndex !== -1 ? Math.round(data.hourly.temperature_2m[jamIndex]) : '--';
+                    const kode = jamIndex !== -1 ? data.hourly.weathercode[jamIndex] : 0;
+                    const emoji = weatherEmoji[kode] || '🌡️';
+                    const hujanProb = jamIndex !== -1 ? data.hourly.precipitation_probability[jamIndex] : 0;
+
+                    hourlyHTML += `
+                        <div class="text-center bg-white rounded-lg p-2 shadow-sm">
+                            <p class="text-[10px] text-gray-400 font-semibold">${labelWaktu[idx]}</p>
+                            <p class="text-[10px] text-gray-300 mb-1">${jamLabel[idx]}</p>
+                            <p class="text-xl my-1">${emoji}</p>
+                            <p class="text-sm font-bold text-gray-700">${suhu}°C</p>
+                            ${hujanProb > 0 ? `<p class="text-[10px] text-blue-400">💧${hujanProb}%</p>` : ''}
+                        </div>
+                    `;
+                });
+                document.getElementById('hourly-container').innerHTML = hourlyHTML;
+
+                // Forecast 7 Hari
+                const daily = data.daily;
+                let forecastHTML = '';
+                for (let i = 0; i < 7; i++) {
+                    const date = new Date(daily.time[i]);
+                    const namaHari = i === 0 ? 'Hari Ini' : hari[date.getDay()];
+                    const emoji = weatherEmoji[daily.weathercode[i]] || '🌡️';
+                    const max = Math.round(daily.temperature_2m_max[i]);
+                    const min = Math.round(daily.temperature_2m_min[i]);
+                    const hujan = daily.precipitation_sum[i] > 0
+                        ? `<span class="text-blue-400 text-[10px]">💧${daily.precipitation_sum[i]}mm</span>`
+                        : '';
+
+                    forecastHTML += `
+                        <div class="flex items-center justify-between py-1.5 ${i === 0 ? 'border-b border-gray-200 pb-2 mb-1' : ''}">
+                            <span class="text-xs font-semibold text-gray-600 w-16">${namaHari}</span>
+                            <span class="text-base">${emoji}</span>
+                            <div class="text-right">
+                                <span class="text-xs font-bold text-gray-700">${max}°</span>
+                                <span class="text-xs text-gray-400 ml-1">${min}°</span>
+                                ${hujan}
+                            </div>
+                        </div>
+                    `;
+                }
+                document.getElementById('forecast-container').innerHTML = forecastHTML;
             })
             .catch(() => {
                 document.getElementById('weather-condition-sidebar').textContent = 'Data tidak tersedia';
+                document.getElementById('forecast-container').innerHTML = '<p class="text-gray-400 text-xs text-center">Data tidak tersedia</p>';
+                document.getElementById('hourly-container').innerHTML = '<p class="text-gray-400 text-xs text-center col-span-4">Data tidak tersedia</p>';
             });
 
         // Star Rating
