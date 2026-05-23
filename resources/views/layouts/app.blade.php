@@ -8,6 +8,10 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css"/>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script id="tailwind-config">
         tailwind.config = {
             theme: {
@@ -79,7 +83,11 @@
         .emerald-shadow:hover {
             box-shadow: 0px 10px 20px rgba(45, 106, 79, 0.15);
         }
-        /* ✅ FIXED: Hanya navbar yang dapat z-index tinggi, bukan semua <header> */
+        .leaflet-pane,
+        .leaflet-top,
+        .leaflet-bottom {
+            z-index: 10 !important;
+        }
         .site-navbar {
             z-index: 50;
         }
@@ -149,6 +157,7 @@
                 <a href="{{ route('register') }}" class="bg-secondary text-white font-bold px-lg py-sm rounded-lg hover:opacity-90 transition-all text-sm">Daftar</a>
             @endauth
         </div>
+
     </div>
 </header>
 
