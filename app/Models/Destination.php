@@ -13,7 +13,6 @@ class Destination extends Model
         'name',
         'description',
         'location',
-        'province',
         'latitude',
         'longitude',
         'category',
@@ -29,5 +28,15 @@ class Destination extends Model
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(DestinationImage::class)->orderBy('order');
+    }
+
+    public function averageRating()
+    {
+        return $this->reviews()->avg('rating');
     }
 }
