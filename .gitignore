@@ -22,3 +22,6 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+/storage/app/public/destinations
+/storage/app/public/tourguides
+/storage/app/public/portfolios
