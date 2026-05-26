@@ -24,13 +24,16 @@ Route::get('/tourguides/{tourguideProfile}', [TourguideProfileController::class,
 
 // Routes untuk semua yang sudah login
 Route::middleware('auth')->group(function () {
+    // Profile Breeze
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Reviews
     Route::post('/destinations/{destination}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
+    // Favorites
     Route::post('/destinations/{destination}/favorite', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
 });
@@ -54,6 +57,7 @@ Route::middleware(['auth', 'role:tourguide'])->prefix('tourguide')->group(functi
 // Routes khusus Admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 
+    // Dashboard
     Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // Destinasi
