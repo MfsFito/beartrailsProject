@@ -158,6 +158,104 @@
             @endauth
         </div>
 
+        {{-- Mobile: Hamburger + Profile --}}
+        <div class="flex md:hidden items-center gap-3">
+            @auth
+            <div class="relative" id="user-menu-mobile">
+                <button onclick="toggleMenuMobile()" class="flex items-center gap-1 text-white/80 hover:text-white transition-colors">
+                    <span class="material-symbols-outlined">account_circle</span>
+                    <span class="material-symbols-outlined text-sm">expand_more</span>
+                </button>
+                <div id="dropdown-menu-mobile" class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-outline-variant hidden z-50">
+                    @if(auth()->user()->role === 'admin')
+                        <a href="{{ route('admin.dashboard') }}" class="block px-md py-sm text-sm text-on-surface hover:bg-surface-container-low rounded-t-xl">Admin Panel</a>
+                    @elseif(auth()->user()->role === 'tourguide')
+                        <a href="{{ route('tourguide.dashboard') }}" class="block px-md py-sm text-sm text-on-surface hover:bg-surface-container-low rounded-t-xl">Dashboard</a>
+                    @else
+                        <a href="{{ route('profile.edit') }}" class="block px-md py-sm text-sm text-on-surface hover:bg-surface-container-low rounded-t-xl">Profil Saya</a>
+                        <a href="{{ route('favorites.index') }}" class="block px-md py-sm text-sm text-on-surface hover:bg-surface-container-low">Favorit</a>
+                    @endif
+                    <hr class="border-outline-variant">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full text-left px-md py-sm text-sm text-error hover:bg-surface-container-low rounded-b-xl">Keluar</button>
+                    </form>
+                </div>
+            </div>
+            @endauth
+
+            {{-- Hamburger Button --}}
+            <button onclick="toggleMobileMenu()" class="text-white/80 hover:text-white transition-colors" id="hamburger-btn">
+                <span class="material-symbols-outlined text-[28px]">menu</span>
+            </button>
+        </div>        
+    </div>
+
+    {{-- Mobile Menu Dropdown --}}
+    <div id="mobile-menu" class="hidden md:hidden bg-[#1B4332] border-t border-emerald-900/50">
+        <div class="px-6 py-4 space-y-1">
+            <a href="{{ route('home') }}"
+               class="block py-3 px-4 rounded-lg text-sm font-medium {{ request()->routeIs('home') ? 'bg-white/10 text-[#D8F3DC]' : 'text-white/80 hover:text-white hover:bg-white/5' }} transition-colors">
+                🏠 Home
+            </a>
+            <a href="{{ route('destinations.index') }}"
+               class="block py-3 px-4 rounded-lg text-sm font-medium {{ request()->routeIs('destinations*') ? 'bg-white/10 text-[#D8F3DC]' : 'text-white/80 hover:text-white hover:bg-white/5' }} transition-colors">
+                🗺️ Destinasi
+            </a>
+            <a href="{{ route('tourguides.index') }}"
+               class="block py-3 px-4 rounded-lg text-sm font-medium {{ request()->routeIs('tourguides*') ? 'bg-white/10 text-[#D8F3DC]' : 'text-white/80 hover:text-white hover:bg-white/5' }} transition-colors">
+                🧭 Tour Guide
+            </a>
+            <a href="{{ route('explore') }}"
+               class="block py-3 px-4 rounded-lg text-sm font-medium {{ request()->routeIs('explore') ? 'bg-white/10 text-[#D8F3DC]' : 'text-white/80 hover:text-white hover:bg-white/5' }} transition-colors">
+                🔍 Explore
+            </a>
+            <a href="{{ route('about') }}"
+               class="block py-3 px-4 rounded-lg text-sm font-medium {{ request()->routeIs('about') ? 'bg-white/10 text-[#D8F3DC]' : 'text-white/80 hover:text-white hover:bg-white/5' }} transition-colors">
+                ℹ️ About
+            </a>
+
+        <hr class="border-emerald-900/50 my-2">
+            @auth
+                {{-- Menu sesuai role --}}
+                @if(auth()->user()->role === 'admin')
+                <a href="{{ route('admin.dashboard') }}" class="block py-3 px-4 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/5 transition-colors">
+                    ⚙️ Admin Panel
+                </a>
+                @elseif(auth()->user()->role === 'tourguide')
+                <a href="{{ route('tourguide.dashboard') }}" class="block py-3 px-4 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/5 transition-colors">
+                    📋 Dashboard
+                </a>
+                @else
+                <a href="{{ route('profile.edit') }}" class="block py-3 px-4 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/5 transition-colors">
+                    👤 Profil Saya
+                </a>
+                <a href="{{ route('favorites.index') }}" class="block py-3 px-4 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/5 transition-colors">
+                    ❤️ Favorit
+                </a>
+                @endif
+
+                {{-- Nama user --}}
+                <div class="px-4 py-2 text-xs text-white/50 font-medium">
+                    Login sebagai: {{ auth()->user()->name }}
+                </div>
+
+                {{-- Logout --}}
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full text-left block py-3 px-4 rounded-lg text-sm font-medium text-red-400 hover:bg-white/5 transition-colors">
+                        🚪 Keluar
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="block py-3 px-4 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/5 transition-colors">
+                    🔑 Masuk
+                </a>
+                <a href="{{ route('register') }}" class="block py-3 px-4 rounded-lg text-sm font-medium bg-secondary text-white hover:opacity-90 transition-colors">
+                    ✨ Daftar
+                </a>
+            @endauth
+        </div>
     </div>
 </header>
 
@@ -201,12 +299,43 @@ function toggleMenu() {
     document.getElementById('dropdown-menu').classList.toggle('hidden');
 }
 
+function toggleMenuMobile() {
+    document.getElementById('dropdown-menu-mobile').classList.toggle('hidden');
+}
+
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const btn = document.getElementById('hamburger-btn');
+    menu.classList.toggle('hidden');
+    btn.querySelector('.material-symbols-outlined').textContent =
+        menu.classList.contains('hidden') ? 'menu' : 'close';
+}
+
+
 // Tutup dropdown kalau klik di luar
 document.addEventListener('click', function(e) {
+    // Deskop dropdown
     const userMenu = document.getElementById('user-menu');
     const dropdownMenu = document.getElementById('dropdown-menu');
     if (userMenu && dropdownMenu && !userMenu.contains(e.target)) {
         dropdownMenu.classList.add('hidden');
+    }
+
+    // Mobile profile dropdown
+    const userMenuMobile = document.getElementById('user-menu-mobile');
+    const dropdownMenuMobile = document.getElementById('dropdown-menu-mobile');
+    if (userMenuMobile && dropdownMenuMobile && !userMenuMobile.contains(e.target)) {
+        dropdownMenuMobile.classList.add('hidden');
+    }
+
+    // Mobile hamburger menu — jangan tutup kalau klik di dalam menu
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    if (mobileMenu && hamburgerBtn &&
+        !mobileMenu.contains(e.target) &&
+        !hamburgerBtn.contains(e.target)) {
+        mobileMenu.classList.add('hidden');
+        hamburgerBtn.querySelector('.material-symbols-outlined').textContent = 'menu';
     }
 });
 </script>
