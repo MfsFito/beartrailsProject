@@ -78,7 +78,6 @@ class DestinationController extends Controller
                 ]);
             }
         }
-
         return redirect()->route('admin.dashboard')->with('success', 'Destinasi berhasil ditambahkan!');
     }
 
@@ -132,7 +131,6 @@ class DestinationController extends Controller
                 ]);
             }
         }
-
         return redirect()->route('admin.dashboard')->with('success', 'Destinasi berhasil diupdate!');
     }
 

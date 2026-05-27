@@ -8,11 +8,12 @@ use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
+    // Simpan review baru
     public function store(Request $request, Destination $destination)
     {
         $request->validate([
             'rating'  => 'required|integer|min:1|max:5',
-            'comment' => 'nullable|string|max:1000',
+            'comment' => 'nullable|string',
         ]);
 
         Review::create([
@@ -25,8 +26,10 @@ class ReviewController extends Controller
         return redirect()->back()->with('success', 'Review berhasil ditambahkan!');
     }
 
+    // Hapus review
     public function destroy(Review $review)
     {
+        // Hanya pemilik review yang boleh hapus
         if ($review->user_id !== auth()->id()) {
             abort(403);
         }
