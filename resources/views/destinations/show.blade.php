@@ -141,7 +141,7 @@
             @if($destination->latitude && $destination->longitude)
             <div class="mb-8">
                 <h2 class="font-display text-2xl font-semibold text-primary mb-4">Lokasi Destinasi</h2>
-                <div id="map" class="w-full h-[350px] rounded-xl overflow-hidden border border-tertiary-fixed-dim shadow-sm"></div>
+                <div id="map" class="w-full h-[350px] rounded-xl border border-tertiary-fixed-dim shadow-sm"></div>
                 <div class="mt-3">
                     <a href="https://www.openstreetmap.org/?mlat={{ $destination->latitude }}&mlon={{ $destination->longitude }}"
                        target="_blank"
