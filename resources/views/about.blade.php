@@ -13,7 +13,7 @@
             </span>
             <h1 class="font-display text-5xl font-bold text-white">Cerita di Balik BearTrails</h1>
             <p class="text-lg text-primary-fixed max-w-2xl mx-auto mt-6 opacity-90">
-                Platform wisata yang lahir dari tugas kuliah — dan ambisi yang lebih besar dari itu.
+                Platform wisata yang lahir dari project tugas kuliah yang akan membawa suasana yang baru.
             </p>
         </div>
     </section>
@@ -40,7 +40,7 @@
                     </li>
                     <li class="flex items-start">
                         <span class="material-symbols-outlined text-surface-tint mr-3 flex-shrink-0">check_circle</span>
-                        <span class="text-on-surface-variant text-base"><strong>Tour Guide Tersertifikasi:</strong> Temukan dan hubungi pemandu lokal yang berpengetahuan dan berpengalaman.</span>
+                        <span class="text-on-surface-variant text-base"><strong>Tour Guide Terverifikasi:</strong> Temukan dan hubungi pemandu lokal yang berpengetahuan dan berpengalaman.</span>
                     </li>
                 </ul>
             </div>
@@ -48,14 +48,6 @@
             {{-- Stats Grid --}}
             <div class="bg-surface rounded-xl p-lg md:p-xl shadow-sm border border-outline-variant/30 grid grid-cols-2 gap-lg relative">
                 <div class="absolute inset-0 bg-primary-container/5 rounded-xl -z-10 translate-y-2 translate-x-2 blur-sm"></div>
-                <div class="flex flex-col space-y-2">
-                    <span class="font-display text-4xl font-bold text-primary-container">3+</span>
-                    <span class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Destinasi</span>
-                </div>
-                <div class="flex flex-col space-y-2">
-                    <span class="font-display text-4xl font-bold text-primary-container">1+</span>
-                    <span class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Tour Guide</span>
-                </div>
                 <div class="flex flex-col space-y-2">
                     <span class="font-display text-4xl font-bold text-primary-container">3</span>
                     <span class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Anggota Tim</span>
@@ -90,7 +82,7 @@
                     </div>
                     <h3 class="font-bold text-lg text-on-surface mb-3">Misi</h3>
                     <p class="text-on-surface-variant text-base flex-grow">
-                        Menyediakan akses mudah, aman, dan informatif ke destinasi luar biasa. Memberdayakan komunitas lokal melalui pariwisata yang bertanggung jawab, sambil menawarkan teknologi mutakhir bagi para petualang.
+                        Menyediakan akses mudah, aman, dan informatif ke destinasi luar biasa. Memberdayakan komunitas lokal melalui pariwisata yang bertanggung jawab, sambil menawarkan teknologi modern bagi para petualang.
                     </p>
                 </div>
             </div>
@@ -135,19 +127,23 @@
         </div>
     </section>
 
-    {{-- CTA --}}
-    <section class="bg-gradient-to-r from-surface-tint to-primary-container text-on-primary py-xl px-lg text-center">
-        <h2 class="font-display text-3xl font-semibold mb-6">Siap Menjelajah Indonesia?</h2>
-        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <a href="{{ route('destinations.index') }}"
-               class="bg-secondary-container text-on-secondary-container font-semibold text-sm px-6 py-3 rounded-full hover:opacity-90 transition-opacity w-full sm:w-auto shadow-sm">
-                Jelajahi Destinasi
-            </a>
-            <a href="{{ route('tourguides.index') }}"
-               class="bg-transparent border border-primary-fixed text-primary-fixed font-semibold text-sm px-6 py-3 rounded-full hover:bg-primary-fixed/10 transition-colors w-full sm:w-auto">
-                Temukan Tour Guide
-            </a>
-        </div>
-    </section>
+{{-- CTA --}}
+<section class="bg-primary text-white py-xl px-lg text-center">
+    <h2 class="font-display text-3xl font-semibold mb-6 text-white">
+        Siap Menjelajah Indonesia?
+    </h2>
+
+    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+        <a href="{{ route('destinations.index') }}"
+           class="bg-white text-primary font-semibold text-sm px-6 py-3 rounded-full hover:bg-gray-100 transition-colors w-full sm:w-auto shadow-sm">
+            Jelajahi Destinasi
+        </a>
+
+        <a href="{{ route('tourguides.index') }}"
+           class="bg-transparent border border-white text-white font-semibold text-sm px-6 py-3 rounded-full hover:bg-white/10 transition-colors w-full sm:w-auto">
+            Temukan Tour Guide
+        </a>
+    </div>
+</section>
 
 </x-app-layout>

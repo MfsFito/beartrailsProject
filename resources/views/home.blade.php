@@ -150,28 +150,6 @@
         </div>
     </section>
 
-    {{-- Stats --}}
-    <section class="bg-primary py-xxl">
-        <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-2 md:grid-cols-4 gap-xl text-center">
-            <div>
-                <h2 class="font-display text-hero-display text-tertiary-fixed-dim">{{ $stats['destinations'] }}+</h2>
-                <p class="text-on-primary-container font-label-md">Destinasi</p>
-            </div>
-            <div>
-                <h2 class="font-display text-hero-display text-tertiary-fixed-dim">{{ $stats['tourguides'] }}+</h2>
-                <p class="text-on-primary-container font-label-md">Tour Guide</p>
-            </div>
-            <div>
-                <h2 class="font-display text-hero-display text-tertiary-fixed-dim">12K+</h2>
-                <p class="text-on-primary-container font-label-md">Wisatawan</p>
-            </div>
-            <div>
-                <h2 class="font-display text-hero-display text-tertiary-fixed-dim">8K+</h2>
-                <p class="text-on-primary-container font-label-md">Ulasan</p>
-            </div>
-        </div>
-    </section>
-
     @push('scripts')
     <script>
     // Peta Homepage

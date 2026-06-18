@@ -5,6 +5,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>BearTrails — {{ config('app.name', 'BearTrails') }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.jpg') }}">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -18,7 +19,7 @@
                 extend: {
                     colors: {
                         "primary": "#012d1d",
-                        "on-primary": "#ffffff",
+                        "on-primary": "#8c6b6b",
                         "primary-container": "#1b4332",
                         "on-primary-container": "#86af99",
                         "secondary": "#8e4e14",

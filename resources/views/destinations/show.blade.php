@@ -23,58 +23,88 @@
     @if($destination->images->count() > 0)
     @php
         $allImages = $destination->images;
-        $showImages = $allImages->take(4);
-        $remaining = $allImages->count() - 4;
+        $totalImages = $allImages->count();
+        $showImages = $allImages->take(5);
+        $remaining = $totalImages - 5;
     @endphp
-    <div class="max-w-[1200px] mx-auto px-6 pt-6">
-        <div class="grid grid-cols-4 gap-3 h-[320px]">
+    <div class="max-w-[1200px] mx-auto px-6 pt-6 mb-4">
 
-            {{-- Kolom Kiri: 3 foto kecil --}}
-            <div class="col-span-1 flex flex-col gap-3">
-                @foreach($showImages->take(3) as $index => $img)
-                <div class="relative flex-1 rounded-xl overflow-hidden group cursor-pointer"
-                    onclick="openLightbox('{{ asset('storage/'.$img->image) }}', {{ $index }})">
-                    <img src="{{ asset('storage/'.$img->image) }}"
-                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        alt="Foto {{ $destination->name }}">
-                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-                </div>
-                @endforeach
+        {{-- 1 foto --}}
+        @if($totalImages === 1)
+        <div class="h-[400px] rounded-xl overflow-hidden cursor-pointer"
+            onclick="openLightbox('{{ asset('storage/'.$showImages->first()->image) }}', 0)">
+            <img src="{{ asset('storage/'.$showImages->first()->image) }}"
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                alt="{{ $destination->name }}">
+        </div>
+
+        {{-- 2 foto --}}
+        @elseif($totalImages === 2)
+        <div class="grid grid-cols-2 gap-3 h-[400px]">
+            @foreach($showImages as $index => $img)
+            <div class="rounded-xl overflow-hidden cursor-pointer group"
+                onclick="openLightbox('{{ asset('storage/'.$img->image) }}', {{ $index }})">
+                <img src="{{ asset('storage/'.$img->image) }}"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    alt="{{ $destination->name }}">
+            </div>
+            @endforeach
+        </div>
+
+        {{-- 3 foto --}}
+        @elseif($totalImages === 3)
+        <div class="grid grid-cols-3 gap-3 h-[400px]">
+            @foreach($showImages as $index => $img)
+            <div class="rounded-xl overflow-hidden cursor-pointer group"
+                onclick="openLightbox('{{ asset('storage/'.$img->image) }}', {{ $index }})">
+                <img src="{{ asset('storage/'.$img->image) }}"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    alt="{{ $destination->name }}">
+            </div>
+            @endforeach
+        </div>
+
+        {{-- 4+ foto --}}
+        @else
+        <div class="grid grid-cols-4 grid-rows-2 gap-3 h-[420px]">
+
+            {{-- Foto pertama: besar di kiri --}}
+            <div class="col-span-2 row-span-2 rounded-xl overflow-hidden cursor-pointer group"
+                onclick="openLightbox('{{ asset('storage/'.$showImages->first()->image) }}', 0)">
+                <img src="{{ asset('storage/'.$showImages->first()->image) }}"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    alt="{{ $destination->name }}">
             </div>
 
-            {{-- Kolom Kanan: 1 foto besar --}}
-            <div class="col-span-3 relative rounded-xl overflow-hidden group cursor-pointer"
-                onclick="openLightbox('{{ asset('storage/'.($showImages->get(3) ?? $showImages->first())->image) }}', 3)">
-                <img src="{{ asset('storage/'.($showImages->get(3) ?? $showImages->first())->image) }}"
+            {{-- Foto 2-5: grid kanan --}}
+            @foreach($showImages->skip(1)->take(4) as $index => $img)
+            <div class="relative rounded-xl overflow-hidden cursor-pointer group"
+                onclick="openLightbox('{{ asset('storage/'.$img->image) }}', {{ $index + 1 }})">
+                <img src="{{ asset('storage/'.$img->image) }}"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    alt="Foto {{ $destination->name }}">
-                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+                    alt="{{ $destination->name }}">
 
-                {{-- Tombol Lihat Semua --}}
-                @if($remaining > 0)
-                <button onclick="event.stopPropagation(); openGallery()"
-                        class="absolute bottom-4 right-4 bg-black/60 hover:bg-black/80 text-white px-4 py-2 rounded-lg text-sm font-semibold backdrop-blur-sm transition-all flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[18px]">photo_library</span>
-                    +{{ $remaining }} foto lagi
-                </button>
+                {{-- Tombol +N foto di foto terakhir --}}
+                @if($loop->last && $remaining > 0)
+                <div onclick="event.stopPropagation(); openGallery()"
+                    class="absolute inset-0 bg-black/50 flex items-center justify-center cursor-pointer hover:bg-black/60 transition-all">
+                    <span class="text-white font-bold text-xl">+{{ $remaining }} foto</span>
+                </div>
                 @endif
             </div>
+            @endforeach
 
         </div>
+        @endif
+
     </div>
 
     {{-- Lightbox --}}
     <div id="lightbox" class="hidden fixed inset-0 bg-black/95 z-[200] flex flex-col items-center justify-center p-4">
-
-        {{-- Tombol Tutup --}}
         <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white hover:text-gray-300 z-10">
             <span class="material-symbols-outlined text-4xl">close</span>
         </button>
-
-        {{-- Counter --}}
         <div class="absolute top-4 left-1/2 -translate-x-1/2 text-white text-sm font-semibold bg-black/40 px-4 py-1 rounded-full" id="lightbox-counter"></div>
-
-        {{-- Foto Utama --}}
         <div class="relative flex items-center justify-center w-full max-h-[80vh]">
             <button onclick="prevPhoto()" class="absolute left-4 text-white hover:text-gray-300 bg-black/40 rounded-full p-2 transition-all hover:bg-black/60">
                 <span class="material-symbols-outlined text-3xl">chevron_left</span>
@@ -84,10 +114,7 @@
                 <span class="material-symbols-outlined text-3xl">chevron_right</span>
             </button>
         </div>
-
-        {{-- Thumbnail Strip --}}
         <div class="flex gap-2 mt-4 overflow-x-auto max-w-full px-4" id="lightbox-thumbs"></div>
-
     </div>
 
     {{-- Data semua foto untuk JS --}}
