@@ -139,8 +139,6 @@ Fix: Tambahkan kondisi tampilan berdasarkan jumlah foto (1 foto = full width, 2 
 ![Layout galeri kacau](BUG/SS%20Bug%203/1.png)
 ![Layout galeri sudah rapi setelah fix](BUG/SS%20Bug%203/2.png)
 
-Note: Screenshot code tidak tersedia, perubahan dapat dilihat langsung saat demo
-
 ---
 
 ### Bug 4 — Admin Tidak Bisa Hapus Review
