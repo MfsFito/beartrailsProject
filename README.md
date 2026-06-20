@@ -174,8 +174,6 @@ if (auth()->user()->role !== 'admin' && $review->user_id !== auth()->id()) {
 
 ## AI Usage Statement
 
-Penggunaan AI dalam project ini bersifat assistif — membantu memahami konsep dan debugging, bukan menggantikan proses belajar dan pengembangan.
-
 ### FATIO (Fullstack)
 
 1) Tool: Claude AI (Anthropic)
