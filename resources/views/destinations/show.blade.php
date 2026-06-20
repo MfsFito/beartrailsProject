@@ -275,12 +275,22 @@
 
                 {{-- Tombol Favorit --}}
                 @auth
+                @php
+                    $isFavorited = $destination->favorites->contains('user_id', auth()->id());
+                @endphp
                 <div class="bg-surface-container-highest p-6 rounded-xl shadow-sm border border-outline-variant">
                     <form action="{{ route('favorites.toggle', $destination) }}" method="POST">
                         @csrf
-                        <button type="submit" class="w-full py-4 bg-secondary-container text-on-secondary-container font-bold rounded-lg flex justify-center items-center gap-2 hover:opacity-90 transition-all active:scale-95">
-                            <span class="material-symbols-outlined">favorite</span>
-                            Simpan ke Favorit
+                        <button type="submit"
+                                class="w-full py-4 rounded-lg flex justify-center items-center gap-2 transition-all active:scale-95 font-bold
+                                    {{ $isFavorited
+                                            ? 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100'
+                                            : 'bg-secondary-container text-on-secondary-container hover:opacity-90' }}">
+                            <span class="material-symbols-outlined {{ $isFavorited ? 'text-red-600' : '' }}"
+                                style="font-variation-settings: 'FILL' {{ $isFavorited ? 1 : 0 }};">
+                                favorite
+                            </span>
+                            {{ $isFavorited ? 'Tersimpan di Favorit' : 'Simpan ke Favorit' }}
                         </button>
                     </form>
                 </div>

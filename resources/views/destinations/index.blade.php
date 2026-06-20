@@ -82,11 +82,17 @@
                         {{ $destination->category }}
                     </span>
                     @auth
+                    @php
+                        $isFavorited = auth()->check() && $destination->favorites->contains('user_id', auth()->id());
+                    @endphp
                     <form action="{{ route('favorites.toggle', $destination) }}" method="POST"
-                          onclick="event.stopPropagation()" class="absolute top-3 right-3">
+                        onclick="event.stopPropagation()" class="absolute top-3 right-3">
                         @csrf
-                        <button type="submit" class="w-[34px] h-[34px] bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-error transition-transform active:scale-90 shadow-md">
-                            <span class="material-symbols-outlined text-[20px]">favorite</span>
+                        <button type="submit" class="w-[34px] h-[34px] bg-white/90 hover:bg-white rounded-full flex items-center justify-center transition-transform active:scale-90 shadow-md {{ $isFavorited ? 'text-error' : 'text-on-surface-variant hover:text-error' }}">
+                            <span class="material-symbols-outlined text-[20px]"
+                                style="font-variation-settings: 'FILL' {{ $isFavorited ? 1 : 0 }};">
+                                favorite
+                            </span>
                         </button>
                     </form>
                     @endauth
