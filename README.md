@@ -156,7 +156,6 @@ Fix: Tambahkan kondisi tampilan berdasarkan jumlah foto (1 foto = full width, 2 
 **2. Layout galeri sudah rapi setelah fix**
 ![Layout galeri sudah rapi](BUG/SS%20Bug%203/2.png)
 
-*Note: Screenshot code tidak tersedia, perubahan dapat dilihat langsung saat demo*
 
 ---
 
