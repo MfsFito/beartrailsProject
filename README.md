@@ -97,10 +97,17 @@ Hipotesis penyebab: Nama file view salah — tersimpan sebagai `explor.blade.php
 
 Fix: Rename file dari `explor.blade.php` menjadi `explore.blade.php`
 
+**1. Error 500 saat buka Explore**
 ![Error 500 saat buka Explore](BUG/SS%20Bug%201/1.png)
-![Nama file typo — explor.blade.php](BUG/SS%20Bug%201/2.png)
-![Nama file sudah diperbaiki — explore.blade.php](BUG/SS%20Bug%201/3.png)
-![Halaman Explore berhasil dibuka](BUG/SS%20Bug%201/4.png)
+
+**2. Nama file typo — explor.blade.php**
+![Nama file typo](BUG/SS%20Bug%201/2.png)
+
+**3. Nama file sudah diperbaiki — explore.blade.php**
+![Nama file diperbaiki](BUG/SS%20Bug%201/3.png)
+
+**4. Halaman Explore berhasil dibuka**
+![Halaman Explore berhasil](BUG/SS%20Bug%201/4.png)
 
 ---
 
@@ -117,10 +124,17 @@ Hipotesis penyebab: Relasi `availabilities()` dan `portfolios()` belum didefinis
 
 Fix: Tambahkan relasi `hasMany` ke `TourguideAvailability` dan `TourguidePortfolio` di Model `TourguideProfile`
 
-![Error 500 di dashboard Tour Guide](BUG/SS%20Bug%202/1.png)
-![Code Model sebelum fix — relasi belum ada](BUG/SS%20Bug%202/2.png)
-![Code Model setelah fix — relasi sudah ditambahkan](BUG/SS%20Bug%202/3.png)
-![Dashboard Tour Guide berhasil dibuka](BUG/SS%20Bug%202/4.png)
+**1. Error 500 di dashboard Tour Guide**
+![Error 500 dashboard Tour Guide](BUG/SS%20Bug%202/1.png)
+
+**2. Code Model sebelum fix — relasi belum ada**
+![Code sebelum fix](BUG/SS%20Bug%202/2.png)
+
+**3. Code Model setelah fix — relasi sudah ditambahkan**
+![Code setelah fix](BUG/SS%20Bug%202/3.png)
+
+**4. Dashboard Tour Guide berhasil dibuka**
+![Dashboard berhasil dibuka](BUG/SS%20Bug%202/4.png)
 
 ---
 
@@ -136,8 +150,13 @@ Hipotesis penyebab: Layout grid galeri tidak menyesuaikan jumlah foto — semua 
 
 Fix: Tambahkan kondisi tampilan berdasarkan jumlah foto (1 foto = full width, 2 foto = 2 kolom, 3 foto = 3 kolom, 4+ foto = 1 besar kiri + grid kecil kanan)
 
+**1. Layout galeri kacau**
 ![Layout galeri kacau](BUG/SS%20Bug%203/1.png)
-![Layout galeri sudah rapi setelah fix](BUG/SS%20Bug%203/2.png)
+
+**2. Layout galeri sudah rapi setelah fix**
+![Layout galeri sudah rapi](BUG/SS%20Bug%203/2.png)
+
+*Note: Screenshot code tidak tersedia, perubahan dapat dilihat langsung saat demo*
 
 ---
 
@@ -166,11 +185,14 @@ if (auth()->user()->role !== 'admin' && $review->user_id !== auth()->id()) {
 }
 ```
 
-![Error 403 saat admin hapus review](BUG/SS%20Bug%204/1.png)
-![Code ReviewController sebelum fix](BUG/SS%20Bug%204/2.png)
-![Code ReviewController setelah fix](BUG/SS%20Bug%204/3.png)
+**1. Error 403 saat admin hapus review**
+![Error 403](BUG/SS%20Bug%204/1.png)
 
-Oke! Ini narasi Bug #5 untuk README:
+**2. Code ReviewController sebelum fix**
+![Code sebelum fix](BUG/SS%20Bug%204/2.png)
+
+**3. Code ReviewController setelah fix**
+![Code setelah fix](BUG/SS%20Bug%204/3.png)
 
 ---
 
@@ -187,15 +209,21 @@ Langkah reproduksi:
 Hipotesis penyebab: Terdapat elemen `<form>` hapus foto yang berada di dalam `<form>` edit utama (nested form). HTML tidak mengizinkan form di dalam form — browser mengabaikan form luar sehingga tombol Simpan tidak bisa submit
 
 Fix: Hapus elemen form hapus foto, ganti tombol hapus dengan JavaScript `fetch()` yang mengirim request DELETE langsung ke server tanpa membutuhkan elemen form
-```
-```
-![Tombol Simpan tidak bisa diklik](BUG/SS%20Bug%205/1.jpeg)
-![Code sebelum fix — form nested di dalam form](BUG/SS%20Bug%205/2.png)
-![Code fix bagian form — nested form dihapus](BUG/SS%20Bug%205/3.png)
-![Code fix JavaScript fetch untuk hapus foto](BUG/SS%20Bug%205/4.png)
-![Destinasi berhasil diupdate](BUG/SS%20Bug%205/5.jpeg)
 
-```
+**1. Tombol Simpan tidak bisa diklik**
+![Tombol Simpan tidak bisa diklik](BUG/SS%20Bug%205/1.jpeg)
+
+**2. Code sebelum fix — form nested di dalam form**
+![Code sebelum fix](BUG/SS%20Bug%205/2.png)
+
+**3. Code fix bagian form — nested form dihapus**
+![Code fix form](BUG/SS%20Bug%205/3.png)
+
+**4. Code fix JavaScript fetch untuk hapus foto**
+![Code fix JavaScript](BUG/SS%20Bug%205/4.png)
+
+**5. Destinasi berhasil diupdate**
+![Destinasi berhasil diupdate](BUG/SS%20Bug%205/5.jpeg)
 
 ---
 
