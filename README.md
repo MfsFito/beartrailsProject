@@ -236,10 +236,6 @@ if (auth()->user()->role !== 'admin' && $review->user_id !== auth()->id()) {
 - Responsive design → breakpoint, grid layout, dan ukuran komponen disesuaikan secara manual agar optimal pada desktop, tablet, dan smartphone.
 - Seluruh implementasi frontend → setelah memperoleh referensi dari AI, kode dipelajari kembali dan diimplementasikan sendiri sesuai kebutuhan proyek BearTrails.
 
-# BearTrails
-
-## AI Usage Statement
-
 ### Alief (Backend)
 
 **Tool:** Claude AI (Anthropic)
