@@ -170,6 +170,33 @@ if (auth()->user()->role !== 'admin' && $review->user_id !== auth()->id()) {
 ![Code ReviewController sebelum fix](BUG/SS%20Bug%204/2.png)
 ![Code ReviewController setelah fix](BUG/SS%20Bug%204/3.png)
 
+Oke! Ini narasi Bug #5 untuk README:
+
+---
+
+### Bug 5 — Form Edit Destinasi Tidak Bisa Submit
+
+Gejala: Halaman edit destinasi yang sudah punya foto galeri — tombol Simpan Perubahan tidak bisa diklik sama sekali, tidak terjadi apa-apa saat diklik
+
+Langkah reproduksi:
+1. Login sebagai Admin
+2. Buka edit destinasi yang sudah punya foto galeri
+3. Ubah data apapun atau langsung klik Simpan Perubahan
+4. Tidak terjadi apa-apa, halaman tidak bergerak
+
+Hipotesis penyebab: Terdapat elemen `<form>` hapus foto yang berada di dalam `<form>` edit utama (nested form). HTML tidak mengizinkan form di dalam form — browser mengabaikan form luar sehingga tombol Simpan tidak bisa submit
+
+Fix: Hapus elemen form hapus foto, ganti tombol hapus dengan JavaScript `fetch()` yang mengirim request DELETE langsung ke server tanpa membutuhkan elemen form
+
+```
+![Tombol Simpan tidak bisa diklik](BUG/SS%20Bug%205/1.jpeg)
+![Code sebelum fix — form nested di dalam form](BUG/SS%20Bug%205/2.png)
+![Code fix bagian form — nested form dihapus](BUG/SS%20Bug%205/3.png)
+![Code fix JavaScript fetch untuk hapus foto](BUG/SS%20Bug%205/4.png)
+![Destinasi berhasil diupdate](BUG/SS%20Bug%205/5.jpeg)
+
+```
+
 ---
 
 ## AI Usage Statement
