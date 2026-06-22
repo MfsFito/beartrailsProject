@@ -200,6 +200,42 @@ if (auth()->user()->role !== 'admin' && $review->user_id !== auth()->id()) {
 - Parameter API Open-Meteo → ditambah timezone=Asia/Makassar karena default UTC menyebabkan jam tidak sesuai waktu Indonesia Tengah (WITA)
 - Struktur migration → disesuaikan dengan kebutuhan project (tambah kolom entry_fee, price_per_day, status, dll)
 
+### Rival (Frontend)
+
+1) Tool: ChatGPT (OpenAI) & Claude AI (Anthropic)
+
+2) Untuk apa:
+- Memahami implementasi Blade Laravel untuk membangun antarmuka pengguna.
+- Mempelajari teknik responsive web design menggunakan Bootstrap/Tailwind CSS.
+- Memahami cara menampilkan data dari backend Laravel ke halaman frontend menggunakan Blade Template Engine.
+- Belajar cara integrasi Open-Meteo API ke dalam tampilan halaman destinasi dan fitur Explore.
+- Memahami implementasi Leaflet.js untuk menampilkan peta interaktif dan marker destinasi wisata.
+- Mempelajari praktik UI/UX yang baik untuk platform wisata berbasis web.
+- Debugging error frontend seperti tampilan tidak responsif, data tidak muncul, atau error JavaScript.
+- Memahami struktur dan alur kode frontend yang telah dibuat selama proses pengembangan.
+
+3) Prompt utama:
+- "Bagaimana membuat halaman destinasi wisata yang responsif menggunakan Blade Laravel dan Bootstrap/Tailwind CSS?"
+- "Bagaimana cara menampilkan data dari controller Laravel ke Blade dan melakukan looping daftar destinasi beserta gambar, kategori, dan deskripsinya?"
+- "Berikan contoh implementasi Leaflet.js untuk menampilkan marker destinasi wisata berdasarkan koordinat latitude dan longitude dari database Laravel."
+- "Bagaimana cara menampilkan data cuaca dari Open-Meteo API menggunakan JavaScript pada halaman detail destinasi?"
+- "Apa praktik terbaik UI/UX untuk platform wisata yang memiliki fitur destinasi, tour guide, review, favorit, dan peta interaktif?"
+
+4) Bagian output AI yang dipakai:
+- Referensi struktur layout halaman menggunakan Blade Template Engine.
+- Pemahaman konsep responsive web design menggunakan CSS dan Bootstrap/Tailwind CSS.
+- Struktur dasar integrasi Leaflet.js untuk menampilkan peta interaktif dan marker destinasi.
+- Referensi implementasi JavaScript untuk menampilkan informasi cuaca dari Open-Meteo API.
+- Pemahaman teknik debugging frontend terkait tampilan, responsivitas, dan manipulasi DOM.
+
+5) Bagian yang saya ubah dan alasan:
+- Layout halaman → disesuaikan dengan desain UI BearTrails yang telah dirancang oleh tim karena output AI hanya memberikan contoh umum.
+- Komponen destinasi, tour guide, dan dashboard → dimodifikasi agar sesuai dengan kebutuhan fitur dan identitas visual BearTrails.
+- Implementasi Leaflet.js → disesuaikan dengan data destinasi wisata Lombok beserta koordinat yang digunakan dalam sistem.
+- Tampilan informasi cuaca → diubah agar lebih mudah dipahami pengguna dan sesuai dengan desain antarmuka BearTrails.
+- Responsive design → breakpoint, grid layout, dan ukuran komponen disesuaikan secara manual agar optimal pada desktop, tablet, dan smartphone.
+- Seluruh implementasi frontend → setelah memperoleh referensi dari AI, kode dipelajari kembali dan diimplementasikan sendiri sesuai kebutuhan proyek BearTrails.
+
 ---
 
 ## 👏 Terima Kasih
