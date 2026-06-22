@@ -12,7 +12,7 @@
                 
                 <h2 class="font-display text-3xl font-bold text-primary mb-3">Halaman Eksklusif</h2>
                 <p class="text-on-surface-variant text-sm mb-8 leading-relaxed">
-                    Fitur peta interaktif dan radar cuaca real-time hanya tersedia untuk member BearTrails. Silakan masuk untuk memulai petualanganmu!
+                    Fitur peta interaktif dan radar cuaca real-time hanya tersedia untuk user yang memiliki akun di BearTrails. Silakan masuk untuk memulai petualanganmu!
                 </p>
 
                 <div class="space-y-3">
