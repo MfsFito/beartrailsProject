@@ -44,14 +44,12 @@ BearTrails adalah website yang membantu wisatawan menemukan destinasi wisata di 
 | Kategori       | Teknologi                          |
 |----------------|------------------------------------|
 | Backend        | Laravel 12                         |
-| Frontend       | Blade Template + Alpine.js         |
+| Frontend       | Blade Template                     |
 | Styling        | Tailwind CSS v4                    |
 | Database       | MySQL                              |
 | Mapping        | Leaflet.js + OpenStreetMap         |
 | Weather        | Open-Meteo API                     |
 | Authentication | Laravel Breeze                     |
-| Lainnya        | Git, Composer, npm, Vite           |
-
 
 ## 📁 Struktur Folder Utama
 
