@@ -266,7 +266,7 @@ if (auth()->user()->role !== 'admin' && $review->user_id !== auth()->id()) {
 **Bagian yang saya ubah dan alasan:**
 - Migration untuk 7 tabel lainnya → ditulis manual sendiri berdasarkan kebutuhan struktur data masing-masing tabel (`Destination`, `DestinationImage`, `Review`, `Favorite`, `TourguideProfile`, `TourguideAvailability`, `TourguidePortfolio`)
 - Logic CRUD dasar dari AI → disesuaikan dengan business logic project (validasi, relasi antar model, role-based access lewat `RoleMiddleware`)
-- Dummy data dari AI → _(isi di sini: apakah diganti dengan data nyata/disesuaikan kolomnya, atau dipakai apa adanya — sesuaikan dengan kondisi sebenarnya)_
+- Dummy data dari AI → _(diganti dengan data dari kaggle)_
 - Error saat migrate/seed (contoh: foreign key constraint, urutan eksekusi seeder) → diselesaikan dengan menyesuaikan urutan migration/seeder sendiri setelah memahami akar masalahnya dari penjelasan AI
 ---
 
