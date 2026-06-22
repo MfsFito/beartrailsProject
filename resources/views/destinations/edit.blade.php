@@ -97,18 +97,12 @@
                             @foreach($destination->images as $img)
                             <div class="relative group">
                                 <img src="{{ asset('storage/'.$img->image) }}"
-                                     class="w-full h-24 object-cover rounded-xl">
-                                <form action="{{ route('destinations.images.destroy', [$destination, $img]) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Hapus foto ini?')"
-                                      class="absolute top-1 right-1">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                            class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-all opacity-0 group-hover:opacity-100">
-                                        ✕
-                                    </button>
-                                </form>
+                                    class="w-full h-24 object-cover rounded-xl">
+                                <button type="button"
+                                        onclick="hapusFoto('{{ route('destinations.images.destroy', [$destination, $img]) }}')"
+                                        class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-all opacity-0 group-hover:opacity-100">
+                                    ✕
+                                </button>
                             </div>
                             @endforeach
                         </div>
@@ -134,4 +128,28 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+    <script>
+    function hapusFoto(url) {
+        if (!confirm('Hapus foto ini?')) return;
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'X-HTTP-Method-Override': 'DELETE'
+            },
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Gagal menghapus foto!');
+            }
+        }).catch(() => {
+            alert('Terjadi kesalahan!');
+        });
+    }
+    </script>
+    @endpush
 </x-app-layout>
