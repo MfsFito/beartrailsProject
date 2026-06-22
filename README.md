@@ -236,6 +236,38 @@ if (auth()->user()->role !== 'admin' && $review->user_id !== auth()->id()) {
 - Responsive design → breakpoint, grid layout, dan ukuran komponen disesuaikan secara manual agar optimal pada desktop, tablet, dan smartphone.
 - Seluruh implementasi frontend → setelah memperoleh referensi dari AI, kode dipelajari kembali dan diimplementasikan sendiri sesuai kebutuhan proyek BearTrails.
 
+# BearTrails
+
+## AI Usage Statement
+
+### Alief (Backend)
+
+**Tool:** Claude AI (Anthropic)
+
+**Untuk apa:**
+- Memahami konsep migration Laravel (tipe data, foreign key, constraint, relasi antar tabel)
+- Memahami struktur dasar Controller (resource controller, CRUD pattern) sebelum dikustomisasi sesuai business logic project
+- Generate dummy data untuk seeder (`DestinationSeeder`, `TourguideSeeder`)
+- Memahami penggunaan Middleware untuk role-based access (Admin, Tourguide, User)
+- Troubleshooting error pada terminal saat menjalankan `php artisan migrate` dan `php artisan db:seed`
+- Debugging error yang muncul saat development backend
+
+**Prompt utama:**
+- "Contoh migration Laravel lengkap dengan berbagai tipe data (string, decimal, enum, foreignId, timestamps, dll)"
+- "Jelaskan struktur dasar resource controller di Laravel untuk CRUD (index, store, update, destroy)"
+- "Buatkan dummy data untuk seeder destinasi wisata dan tourguide di Laravel"
+
+**Bagian output AI yang dipakai:**
+- Pemahaman struktur 1 contoh migration lengkap (mencakup berbagai tipe data) sebagai referensi
+- Pemahaman pola dasar resource controller (struktur method index, store, update, destroy)
+- Dummy data dari AI untuk `DestinationSeeder` dan `TourguideSeeder`
+- Solusi/penjelasan untuk error migration/seeding di terminal (misalnya foreign key constraint, urutan seeder)
+
+**Bagian yang saya ubah dan alasan:**
+- Migration untuk 7 tabel lainnya → ditulis manual sendiri berdasarkan kebutuhan struktur data masing-masing tabel (`Destination`, `DestinationImage`, `Review`, `Favorite`, `TourguideProfile`, `TourguideAvailability`, `TourguidePortfolio`)
+- Logic CRUD dasar dari AI → disesuaikan dengan business logic project (validasi, relasi antar model, role-based access lewat `RoleMiddleware`)
+- Dummy data dari AI → _(isi di sini: apakah diganti dengan data nyata/disesuaikan kolomnya, atau dipakai apa adanya — sesuaikan dengan kondisi sebenarnya)_
+- Error saat migrate/seed (contoh: foreign key constraint, urutan eksekusi seeder) → diselesaikan dengan menyesuaikan urutan migration/seeder sendiri setelah memahami akar masalahnya dari penjelasan AI
 ---
 
 ## 👏 Terima Kasih
