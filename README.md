@@ -187,7 +187,7 @@ Langkah reproduksi:
 Hipotesis penyebab: Terdapat elemen `<form>` hapus foto yang berada di dalam `<form>` edit utama (nested form). HTML tidak mengizinkan form di dalam form — browser mengabaikan form luar sehingga tombol Simpan tidak bisa submit
 
 Fix: Hapus elemen form hapus foto, ganti tombol hapus dengan JavaScript `fetch()` yang mengirim request DELETE langsung ke server tanpa membutuhkan elemen form
-
+```
 ```
 ![Tombol Simpan tidak bisa diklik](BUG/SS%20Bug%205/1.jpeg)
 ![Code sebelum fix — form nested di dalam form](BUG/SS%20Bug%205/2.png)
