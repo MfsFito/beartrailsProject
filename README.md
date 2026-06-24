@@ -76,7 +76,7 @@ BearTrails/
 
 ## 🎯 Sitemap
 
-![Sitemap BearTrails](sitemap_beartrails.jpg)
+![Sitemap BearTrails](SitemapBearTrails.jpg)
 
 ---
 
@@ -316,6 +316,22 @@ Fix: Hapus elemen form hapus foto, ganti tombol hapus dengan JavaScript `fetch()
 - Logic CRUD dasar dari AI → disesuaikan dengan business logic project (validasi, relasi antar model, role-based access lewat `RoleMiddleware`)
 - Dummy data dari AI → _(diganti dengan data dari kaggle)_
 - Error saat migrate/seed (contoh: foreign key constraint, urutan eksekusi seeder) → diselesaikan dengan menyesuaikan urutan migration/seeder sendiri setelah memahami akar masalahnya dari penjelasan AI
+
+
+____________________________________________________________
+## Beberapa Tampilan Website
+
+**Homepage**
+![Homepage BearTrails](screenshots/homepage.jpeg)
+
+**Detail Destinasi**
+![Detail Destinasi](screenshots/detail-destinasi.jpeg)
+
+**Admin Dashboard**
+![Admin Dashboard](screenshots/admin-dashboard.jpeg)
+
+____________________________________________________________
+
 ---
 
 ## 👏 Terima Kasih
