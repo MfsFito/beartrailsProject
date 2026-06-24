@@ -35,8 +35,8 @@ BearTrails adalah website yang membantu wisatawan menemukan destinasi wisata di 
 
 | Nama       | Role              | Tanggung Jawab Utama                          |
 |------------|-------------------|-----------------------------------------------|
-| **FATIO**  | Fullstack         | Database, Migration, Model, Integrasi API, Seeder, Deployment |
-| **ALIF**   | Backend           | Controller, Middleware, Logic, Authentication, Authorization |
+| **FATIO**  | Fullstack         | Database, Migration, Integrasi API, Seeder, Routes, Javascript |
+| **ALIF**   | Backend           | Model, Controller, Middleware, Logic, Authentication, Authorization |
 | **RIVAL**  | Frontend          | UI/UX, Blade Template, Responsive Design, Styling |
 
 ## 🛠 Tech Stack
